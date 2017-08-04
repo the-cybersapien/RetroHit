@@ -1,13 +1,14 @@
-package xyz.cybersapien.retrohit.retrofit
+package xyz.cybersapien.retrohit.network
 
-import okhttp3.*
+import okhttp3.Headers
+import okhttp3.Request
+import okhttp3.RequestBody
 
-fun makeGETRequest(
+fun buildGETRequest(
         URL: String,
         headers: Headers? = null,
         requestBody: RequestBody? = null
-): Response? {
-    val OkHttpClient = OkHttpClient()
+): Request {
 
     val requestBuilder = Request.Builder()
             .url(URL)
@@ -17,7 +18,5 @@ fun makeGETRequest(
     if (requestBody != null)
         requestBuilder.method("GET", requestBody)
 
-    val request = requestBuilder.build()
-    val response = OkHttpClient.newCall(request).execute()
-    return response
+    return requestBuilder.build()
 }
