@@ -3,4 +3,13 @@
     <string name="title_activity_main">RetroHit</string>
     <string name="rest_method">REST method:</string>
     <string name="http_url">HTTP URL</string>
+    <string name="error_string">Error\n%1$s</string>
+
+    <string-array name="methods_array">
+        <item>GET</item>
+        <item>POST</item>
+        <item>PUT</item>
+        <item>PATCH</item>
+        <item>DELETE</item>
+    </string-array>
 </resources>

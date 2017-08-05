@@ -4,55 +4,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="xyz.cybersapien.retrohit.activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/rest_method_select"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:text="@string/rest_method"
+        app:autoSizeMaxTextSize="22sp"
+        app:autoSizeMinTextSize="16sp"
+        app:autoSizeStepGranularity="2sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/methods_spinner"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/methods_spinner"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+    <Spinner
+        android:id="@+id/methods_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="35dp"
+        app:layout_constraintLeft_toRightOf="@id/rest_method_select"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/url_text_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/http_url"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/methods_spinner">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/url_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:inputType="textUri" />
 
-            <TextView
-                android:id="@+id/rest_method_select"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/rest_method" />
+    </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/methods_spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-        </LinearLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/url_text_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/http_url">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/url_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textUri" />
-
-        </android.support.design.widget.TextInputLayout>
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/url_text_layout">
 
         <TextView
             android:id="@+id/result_textview"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
 
-    </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
