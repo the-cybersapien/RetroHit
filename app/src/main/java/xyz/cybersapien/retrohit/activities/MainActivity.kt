@@ -4,16 +4,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Response
+import okhttp3.*
 import xyz.cybersapien.retrohit.R
+import xyz.cybersapien.retrohit.adapters.HeaderViewAdapter
 import xyz.cybersapien.retrohit.network.buildRequest
 import xyz.cybersapien.retrohit.network.isValidURL
 import java.io.IOException
@@ -24,6 +23,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     val LOG_TAG = "MainActivity"
     lateinit var httpClient: OkHttpClient
     lateinit var methodsAdapter: ArrayAdapter<CharSequence>
+    lateinit var headersAdapter: HeaderViewAdapter
+    var headers = Headers.Builder()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +38,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         methods_spinner.adapter = methodsAdapter
 
-        fab.setOnClickListener(this)
+        headersAdapter = HeaderViewAdapter(headers.build(), true)
+        headers_list.layoutManager = LinearLayoutManager(this)
+        headers_list.adapter = headersAdapter
 
+        fab.setOnClickListener(this)
+        button_add_header.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -53,6 +58,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     url_edit_text.error = "Invalid URL!"
                 }
                 Log.d(LOG_TAG, methods_spinner.selectedItem.toString())
+            }
+            button_add_header.id -> {
+                val headerName = new_header_name.text.toString()
+                val headerValue = new_header_value.text.toString()
+                var problem = false
+                if (headerName.isNullOrBlank()) {
+                    new_header_name.error = "Error! Name Can't be empty!"
+                    problem = true
+                }
+                if (headerValue.isNullOrBlank()) {
+                    new_header_value.error = "Error! Header Value is empty!"
+                    problem = true
+                }
+                if (!problem) {
+                    headers = headers.add(headerName, headerValue)
+                    headersAdapter.headers = headers.build()
+                    headersAdapter.notifyDataSetChanged()
+                }
             }
             else -> {
                 // Do Nothing
@@ -75,14 +98,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         val method = methods_spinner.selectedItem as String
 
-        val getRequest = buildRequest(url, method)
+        val getRequest = buildRequest(url, method, headersAdapter.headers)
 
         httpClient.newCall(getRequest)
                 .enqueue(object : Callback {
                     override fun onFailure(call: Call?, e: IOException?) {
                         val handler = Handler(Looper.getMainLooper())
                         handler.post({
-                            result_textview.text = getString(R.string.error_string, e.toString())
                         })
                     }
 
@@ -92,11 +114,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         val headers = response.headers()
                         val resString = response.toString()
                         val resBodyString = responseBody?.string()
-                        handler.post({
-                            Log.d(LOG_TAG, resString)
-                            Log.d(LOG_TAG, headers.toString())
-                            result_textview.text = resBodyString
-                        })
+                        handler.post {
+                            headersAdapter.headers = headers
+                            headersAdapter.notifyDataSetChanged()
+                        }
                     }
                 })
     }
