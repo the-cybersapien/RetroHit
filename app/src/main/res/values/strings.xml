@@ -12,4 +12,7 @@
         <item>PATCH</item>
         <item>DELETE</item>
     </string-array>
+    <string name="resultItem">Result</string>
+    <string name="requestItem">Request</string>
+    <string name="section_format">Section %1$d</string>
 </resources>
