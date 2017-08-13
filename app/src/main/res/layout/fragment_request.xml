@@ -8,8 +8,7 @@
     android:layout_marginRight="@dimen/activity_horizontal_margin"
     android:layout_marginTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="xyz.cybersapien.retrohit.activities.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="xyz.cybersapien.retrohit.activities.MainActivity">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/rest_method_select"

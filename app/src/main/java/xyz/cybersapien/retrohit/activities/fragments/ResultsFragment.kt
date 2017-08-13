@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import xyz.cybersapien.retrohit.R
 
 /**
- * Created by ogcybersapien on 6/8/17.
+ * Created by the-cybersapien on 6/8/17.
  */
 
 class ResultsFragment : Fragment() {
